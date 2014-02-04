@@ -21,7 +21,10 @@ public class BgpMonitor {
         try {
             manager.loadConfigFromFile( "/home/hbennett/Projects/bgpstatus/devicelist.conf" );
             //manager.loadConfigFromFile( "./devicelist.conf" );
+            manager.initializeDevices();
         } catch (IOException ex) {
+            Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RuntimeException ex) {
             Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
         

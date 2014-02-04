@@ -84,6 +84,14 @@ public class DeviceManager {
         
     }
     
+    public void initializeDevices() {
+        for( Device device: getDeviceList() ){
+            device.initialize();
+            //System.out.println( device.getName() );
+        }
+           
+    }
+    
     // Configuration Methods
     public void setConfig( String key, String value ) {
         configList.put(key, value);

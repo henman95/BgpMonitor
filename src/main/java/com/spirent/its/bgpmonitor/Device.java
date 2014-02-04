@@ -6,6 +6,8 @@
 
 package com.spirent.its.bgpmonitor;
 
+import java.io.IOException;
+
 /**
  *
  * @author hbennett
@@ -30,7 +32,14 @@ public class Device {
     
     // Get Initial state and type of system
     public void initialize() {
+        SnmpDevice snmp = new SnmpDevice( this.address, this.community );
         
+        try {
+            this.deviceType = snmp.getAsString( ".1.3.6.1.2.1.1.1.0" );
+            deviceStatus = "ok";
+        } catch( IOException e ) {
+            deviceStatus = "SnmpError";
+        }
     }
     
     
