@@ -37,7 +37,6 @@ public class DeviceManager {
         deviceList = new HashMap<>();
         siteList   = new HashMap<>();
 
-        
         // Configuration file matching
         reComment = Pattern.compile( "^#.*$" );
         reConfig  = Pattern.compile( "^config\\s+(?<key>\\S+)\\s+(?<value>\\S+).*" );
@@ -46,26 +45,14 @@ public class DeviceManager {
         
         // Default Parameters
         configList.put( "defaultCommunity", "public" );
-        configList.put( "defaultRestKey", "" );
-        
+        configList.put( "defaultRestKey", "" );   
     }
     
     public void loadConfigFromFile( String filename ) throws IOException {
         Path    file;
         String  line;
         Matcher matcher;
-        
-        /*
-        URL resourceUrl = getClass().
-        getResource("/sample.txt");
-        Path resourcePath = Paths.get(resourceUrl.toURI());
-        FileTime lmt = Files.getLastModifiedTime(resourcePath);
-        // prints e.g. "Tue Jul 09 16:35:51 CEST 2013"
-        System.out.println(new Date(lmt.toMillis()));
-        */
-        
-        //Path file = Paths.get( filename );
-        
+
         try {
             URL resourceUrl = getClass().getResource( "/META-INF/text/devicelist.conf" );
             file = Paths.get(resourceUrl.toURI());
@@ -111,9 +98,14 @@ public class DeviceManager {
     public void initializeDevices() {
         for( Device device: getDeviceList() ){
             device.initialize();
-            //System.out.println( device.getName() );
-        }
-           
+        }    
+    }
+    
+    public void refreshDevices() {
+        ArrayList<Device> list = getDeviceList();
+        
+        Device device = list.get( 8 );
+        device.refresh();
     }
     
     // Configuration Methods

@@ -27,7 +27,8 @@ public class BgpMonitor {
         } catch (RuntimeException ex) {
             Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+       
+        manager.refreshDevices();
         manager.setConfig("defaultCommunity", "peekaboo" );
         
         System.out.println( manager );

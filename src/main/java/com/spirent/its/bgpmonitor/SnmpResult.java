@@ -39,4 +39,8 @@ public class SnmpResult {
     public String getValue() {
         return this.value;
     }
+    
+    public String toString() {
+        return String.format( "OID:%s - %s", this.oid, this.value);   
+    }
 }

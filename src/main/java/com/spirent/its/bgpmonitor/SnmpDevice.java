@@ -7,6 +7,7 @@
 package com.spirent.its.bgpmonitor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
@@ -74,7 +75,50 @@ public class SnmpDevice {
         }
 
         throw new RuntimeException( "GET timed out" );
+    }
+    
+    public SnmpResult getNext( String oid ) throws IOException {
+        ResponseEvent event;
+        String returnOid, returnValue;
         
+        event       = getnext(new OID[]{new OID(oid)});
+        returnOid   = event.getResponse().get(0).getOid().toString();
+        returnValue = event.getResponse().get(0).getVariable().toString();
+        
+        return new SnmpResult(returnOid, returnValue);
+    }
+    
+    public ResponseEvent getnext(OID oids[]) throws IOException {
+        PDU pdu = new PDU();
+        
+        for(OID oid: oids)
+            pdu.add( new VariableBinding(oid));
+
+        
+        pdu.setType( PDU.GETNEXT );
+        
+        ResponseEvent event = snmp.send(pdu, getTarget(), null);
+        
+        if( event != null)
+            return event;
+        
+        throw new RuntimeException( "GETNEXT timed out" );
+        
+    }
+    
+    public ArrayList<String> getTableIndex(String oid) throws IOException {
+        ResponseEvent event;
+        ArrayList<String> values = new ArrayList<>();
+        
+        SnmpResult result = getNext( oid );
+        
+        
+        while( result.getOid().startsWith( oid ) ) {
+            values.add( result.getOid().substring( oid.length()+1) );
+            result = getNext( result.getOid() );
+        }
+ 
+        return values;
     }
     
     private Target getTarget() {
@@ -86,9 +130,6 @@ public class SnmpDevice {
         target.setTimeout(1500);
         target.setVersion(SnmpConstants.version2c);
         
-        
-        System.out.println( "Target1: " + this.address );
-        System.out.println( "Target: " + target );
         return target;
     }
     
