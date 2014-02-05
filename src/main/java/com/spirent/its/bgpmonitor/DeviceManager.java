@@ -8,12 +8,16 @@ package com.spirent.its.bgpmonitor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,10 +51,30 @@ public class DeviceManager {
     }
     
     public void loadConfigFromFile( String filename ) throws IOException {
-        String line;
+        Path    file;
+        String  line;
         Matcher matcher;
         
-        Path file = Paths.get( filename );
+        /*
+        URL resourceUrl = getClass().
+        getResource("/sample.txt");
+        Path resourcePath = Paths.get(resourceUrl.toURI());
+        FileTime lmt = Files.getLastModifiedTime(resourcePath);
+        // prints e.g. "Tue Jul 09 16:35:51 CEST 2013"
+        System.out.println(new Date(lmt.toMillis()));
+        */
+        
+        //Path file = Paths.get( filename );
+        
+        try {
+            URL resourceUrl = getClass().getResource( "/META-INF/text/devicelist.conf" );
+            file = Paths.get(resourceUrl.toURI());
+            
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+            file = Paths.get(filename);
+        }
+        
         BufferedReader reader = Files.newBufferedReader(file, Charset.defaultCharset() );
               
         while( (line = reader.readLine()) != null ) {
