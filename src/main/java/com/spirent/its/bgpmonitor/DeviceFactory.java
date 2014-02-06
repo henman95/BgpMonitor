@@ -11,12 +11,13 @@ package com.spirent.its.bgpmonitor;
  * @author hbennett
  */
 public class DeviceFactory {
-    public static Device createDevice( String name, String address, String community ) {
+    public static Device createDevice( String name, String address, String community, DeviceManager manager ) {
         Device device = new Device();
         
         device.setName(name);
         device.setAddress(address);
         device.setCommunity(community);
+        device.setManager( manager );
         
         return device;
     }

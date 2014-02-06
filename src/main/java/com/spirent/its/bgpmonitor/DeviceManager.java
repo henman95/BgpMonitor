@@ -67,7 +67,6 @@ public class DeviceManager {
         while( (line = reader.readLine()) != null ) {
             matcher = reComment.matcher(line);
             if( matcher.matches() ) {
-                System.out.println( "Comment: " + line);
             } 
             
             matcher = reConfig.matcher(line);
@@ -80,7 +79,7 @@ public class DeviceManager {
                 String address   = matcher.group("address");
                 String community = matcher.group("community");
             
-                addDevice( DeviceFactory.createDevice( name,address,community));
+                addDevice( DeviceFactory.createDevice( name,address,community, this));
             }
             
             matcher = reSite.matcher( line );
@@ -102,10 +101,8 @@ public class DeviceManager {
     }
     
     public void refreshDevices() {
-        ArrayList<Device> list = getDeviceList();
-        
-        Device device = list.get( 8 );
-        device.refresh();
+        for( Device device: getDeviceList() ) 
+            device.refresh();
     }
     
     // Configuration Methods
@@ -218,6 +215,21 @@ public class DeviceManager {
         out.append( "-----------------------------------").append(newline);
         for( Site site: getSiteList() )
             out.append( site );
+        
+        
+        out.append( "Peer List" ).append(newline);
+        out.append( "-----------------------------------").append(newline);
+        for( Device device: getDeviceList() ) {
+            for( BgpPeer peer: device.getBgpPeers() ) {
+                out.append( String.format("%-20s %-15s", device.getName(), device.getAddress() ) );
+                out.append( String.format(" %-15s %-15s", peer.getLocalAddress(), peer.getRemoteAddress() ));
+                out.append( String.format(" %3s", peer.getState() ));
+                out.append( String.format(" %5s %5s", peer.getLocalAS(), peer.getRemoteAS() ));
+                out.append( newline );
+            }
+        }
+        
+        
         
         
         return out.toString();

@@ -6,17 +6,17 @@
 
 package com.spirent.its.bgpmonitor;
 
-public class BgpEntry {
+public class BgpPeer {
     private String localAddress;
     private String remoteAddress;
     private String state;
     private String localAS;
     private String remoteAS;
 
-    public BgpEntry() {
+    public BgpPeer() {
     }
 
-    public BgpEntry(String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
+    public BgpPeer(String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
         this.localAddress = localAddress;
         this.remoteAddress = remoteAddress;
         this.state = state;
