@@ -94,17 +94,39 @@ public class DeviceManager {
         
     }
     
-    public void initializeDevices() {
+    public void sendCommand( String action ) {
         for( Device device: getDeviceList() ){
-            device.initialize();
+            //device.initialize();
+            DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
+            //lastThread = thread;
+            
+            thread.start();
+        } 
+
+        while( DeviceUpdateThread.getCount() > 0 ) {
+            try {
+                Thread.sleep(50);
+                //System.out.println( "ThreadCount " + lastThread.getCount() );
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public void sendCommandJoined( String action ) {
+        for( Device device: getDeviceList() ){
+            DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
+                        
+            thread.start();
+            
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }    
     }
-    
-    public void refreshDevices() {
-        for( Device device: getDeviceList() ) 
-            device.refresh();
-    }
-    
+
     // Configuration Methods
     public void setConfig( String key, String value ) {
         configList.put(key, value);
@@ -228,10 +250,7 @@ public class DeviceManager {
                 out.append( newline );
             }
         }
-        
-        
-        
-        
+   
         return out.toString();
     }
 }

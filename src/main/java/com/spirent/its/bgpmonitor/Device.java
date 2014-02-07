@@ -8,14 +8,10 @@ package com.spirent.its.bgpmonitor;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -28,10 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-/**
- *
- * @author hbennett
- */
 public class Device {
     private String name;
     private String address;
@@ -68,24 +60,6 @@ public class Device {
         stateTable.put( "4", "opensent" );
         stateTable.put( "5", "openconfirm" );
         stateTable.put( "6", "established" );
-    }
-    
-    protected TrustManager[] getTrustManager() {
-        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                return null;
-            }
-
-            public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-            }
-
-            public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-            }
-        } };
-
-        return trustAllCerts;
     }
 
     // Get Initial state and type of system
@@ -124,14 +98,10 @@ public class Device {
             refreshWithRest();
     }
         
-    
     private void refreshWithSnmp() {
         ArrayList<String> keyList = new ArrayList<>();
         SnmpDevice snmp = new SnmpDevice( this.address, this.community );
-        
-        //if( !getName().startsWith( "anetsjc" ) )
-        //    return;
-        
+
         try {
             keyList = snmp.getTableIndex( "1.3.6.1.2.1.15.3.1.1" );
             
@@ -161,15 +131,8 @@ public class Device {
         Document                doc;
         NodeList                nodes;
         String                  localAS;
-        
-        
-        //if( !this.name.startsWith( "netsjc" ) )
-        //    return;
-        
+
         try {
-            //SSLContext ssl = SSLContext.getInstance("SSL");
-            //ssl.init(null,getTrustManager(),new SecureRandom());
-            //client    = ClientBuilder.newBuilder().sslContext(ssl).build();
             client    = ClientBuilder.newClient();
             dbFactory = DocumentBuilderFactory.newInstance();
             dBuilder  = dbFactory.newDocumentBuilder();
@@ -233,8 +196,7 @@ public class Device {
         
         return result;
     }
-    
-    
+     
     private static ArrayList<Element> getXmlChildren( Element element, String name ) {
         ArrayList<Element> results = new ArrayList<>();
         NodeList children =element.getChildNodes();
@@ -258,14 +220,6 @@ public class Device {
         
         return value;
     }
-    
-    private static String getXmlTagValue( String tag, Element element ) {
-        NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = (Node) nodes.item(0);
-
-        return node.getNodeValue(); 
-    }
-    
     
     // Getters and Setters
     public void setManager( DeviceManager deviceManager ) {

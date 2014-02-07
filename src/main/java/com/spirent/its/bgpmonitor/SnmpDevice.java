@@ -23,7 +23,6 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class SnmpDevice {
     private final String address;
     private final String community;
