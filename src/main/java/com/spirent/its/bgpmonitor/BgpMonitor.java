@@ -13,6 +13,8 @@ public class BgpMonitor {
     }
     
     public void run() {
+        ManagerUpdateThread thread = new ManagerUpdateThread( manager );
+        
         try {
             manager.loadConfigFromFile( "/home/hbennett/Projects/bgpstatus/devicelist.conf" );
             //manager.loadConfigFromFile( "./devicelist.conf" );
@@ -22,13 +24,30 @@ public class BgpMonitor {
         } catch (RuntimeException ex) {
             Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        if( manager.hasConfigKey( "refreshRate" ) ) {
+            String newRate = manager.getConfig( "refreshRate" );
+            thread.setInterval( Integer.parseInt(newRate));
+        }
        
-        manager.sendCommand( "refresh" );
-
-        for( int i=0;i<5;i++ ) {
+        System.out.println( "Initial Refresh Starting" );
+        manager.sendCommandJoined( "refresh" );
+        
+        System.out.println( "Periodic Refresh Starting" );
+        thread.start();
+        
+        for( int i=0;i<20;i++ ) {
             OutputBgpList();
             
-            BgpMonitor.sleep( 1000 );
+            BgpMonitor.sleep( 5000 );
+        }
+        
+        thread.signalExit();
+        
+        try {
+            thread.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

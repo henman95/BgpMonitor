@@ -118,6 +118,8 @@ public class DeviceManager {
                 Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        setCommandTime( action );
     }
     
     public void sendCommandJoined( String action ) {
@@ -131,7 +133,9 @@ public class DeviceManager {
             } catch (InterruptedException ex) {
                 Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }    
+        }
+        
+        setCommandTime( action );
     }
 
     // Configuration Methods
@@ -220,6 +224,10 @@ public class DeviceManager {
     
     public boolean hasSite( String key ) {
         return siteList.containsKey( key ) ;
+    }
+    
+    public void setCommandTime( String command ) {
+        setCommandTime( command, new Date() );
     }
     
     public void setCommandTime( String command, Date date ) {

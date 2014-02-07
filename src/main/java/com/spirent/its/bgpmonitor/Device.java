@@ -34,8 +34,7 @@ public class Device {
     private String deviceType;
     private String deviceStatus;
     
-    private ArrayList<BgpPeer> bgpPeerList;
-    
+    private ArrayList<BgpPeer>     bgpPeerList;
     private HashMap<String,String> stateTable;
     
     public Device() {
@@ -106,6 +105,7 @@ public class Device {
             keyList = snmp.getTableIndex( "1.3.6.1.2.1.15.3.1.1" );
             
             String localAS = snmp.get( "1.3.6.1.2.1.15.2.0" ).getValue();
+            bgpPeerList.clear();
             
             for( String key: keyList) {
                 String localAddress  = snmp.get( "1.3.6.1.2.1.15.3.1.5." + key ).getValue();
