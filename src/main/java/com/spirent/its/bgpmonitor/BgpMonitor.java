@@ -1,6 +1,7 @@
 package com.spirent.its.bgpmonitor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,11 +24,42 @@ public class BgpMonitor {
         }
        
         manager.sendCommand( "refresh" );
-        //manager.setConfig("defaultCommunity", "peekaboo" );
-        
-        System.out.println( manager );
+
+        for( int i=0;i<5;i++ ) {
+            OutputBgpList();
+            
+            BgpMonitor.sleep( 1000 );
+        }
     }
 
+    private void OutputBgpList() {
+        String newline = "\n";
+
+        for( Device device: manager.getDeviceList() ) {
+            for( BgpPeer peer: device.getBgpPeers() ) {
+                StringBuilder out = new StringBuilder();
+                
+                out.append( String.format("%-20s %-15s", device.getName(), device.getAddress() ) );
+                out.append( String.format(" %-15s %-15s", peer.getLocalAddress(), peer.getRemoteAddress() ));
+                out.append( String.format(" %3s", peer.getState() ));
+                out.append( String.format(" %5s %5s", peer.getLocalAS(), peer.getRemoteAS() ));
+                
+                System.out.println( out );
+            }
+        }
+        
+        System.out.println( String.format( "Last Run : %s" , manager.getCommandTime( "refresh" ).toString() ));
+        System.out.println( String.format( "Last Run : %d" , manager.elapseCommandTime( "refresh" ) ));
+    }
+    
+    public static void sleep( int ms ) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(BgpMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +23,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeviceManager {
+    private Date  lastUpdate;
+    
     private final HashMap<String,String> configList;
     private final HashMap<String,Device> deviceList;
     private final HashMap<String,Site>   siteList;
+    private final HashMap<String,Date>   commandTimeList;
     
     Pattern reComment;
     Pattern reConfig;
@@ -33,9 +37,10 @@ public class DeviceManager {
     
     public DeviceManager() {
         // Internal Databases
-        configList = new HashMap<>();
-        deviceList = new HashMap<>();
-        siteList   = new HashMap<>();
+        configList      = new HashMap<>();
+        deviceList      = new HashMap<>();
+        siteList        = new HashMap<>();
+        commandTimeList = new HashMap<>();
 
         // Configuration file matching
         reComment = Pattern.compile( "^#.*$" );
@@ -95,6 +100,8 @@ public class DeviceManager {
     }
     
     public void sendCommand( String action ) {
+        setCommandTime( action, new Date() );
+        
         for( Device device: getDeviceList() ){
             //device.initialize();
             DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
@@ -214,6 +221,28 @@ public class DeviceManager {
     public boolean hasSite( String key ) {
         return siteList.containsKey( key ) ;
     }
+    
+    public void setCommandTime( String command, Date date ) {
+        commandTimeList.put(command, date);
+    }
+    
+    public Date getCommandTime( String command ) {
+        if( commandTimeList.containsKey( command ) )
+            return commandTimeList.get( command );
+        
+        return null;
+    }
+    
+    public int elapseCommandTime( String command ) {
+        Date lastRun = getCommandTime( command );
+        Date now     = new Date();
+        
+        if( lastRun == null )
+            return -1;
+
+        return (int)((now.getTime()-lastRun.getTime())/1000);
+    }
+    
     
     @Override
     public String toString() {
