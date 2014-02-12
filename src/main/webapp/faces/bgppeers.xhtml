@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <title>Device List</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/common/commonLayout.xhtml">
+            <ui:define name="content">
+
+                <ui:repeat var="device" value="#{deviceManager.devices}" >
+                    <h:dataTable var="peer" value="#{deviceManager.getPeers(device)}" >
+                        <h:column><h:outputText value="#{device.name}"/></h:column>
+                        <h:column><h:outputText value="#{device.address}"/></h:column>
+                        <h:column><h:outputText value="#{peer.localAddress}"/></h:column>
+                        <h:column><h:outputText value="#{peer.remoteAddress}"/></h:column>
+                        <h:column><h:outputText value="#{peer.localAS}"/></h:column>
+                        <h:column><h:outputText value="#{peer.remoteAS}"/></h:column>
+                        <h:column><h:outputText value="#{peer.state}"/></h:column>
+                    </h:dataTable>
+                </ui:repeat>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

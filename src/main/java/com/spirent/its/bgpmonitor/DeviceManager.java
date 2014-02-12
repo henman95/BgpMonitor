@@ -190,6 +190,10 @@ public class DeviceManager {
             
     }
     
+    public void clearDevices() {
+        deviceList.clear();
+    }
+    
     public boolean hasDevice( String name ) {
         return deviceList.containsKey(name);
     }

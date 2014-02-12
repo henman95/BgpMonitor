@@ -1,16 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <h:body>
         <ui:composition>
-            
-            <h1>This is a default header</h1>
-            
+
+            <div id="headerTitle">
+                Spirent BGP Monitor
+            </div>            
+
+            <div id="widgetBar">
+                <div class="headerWidget"><h:link outcome="bgpdevices" value="[BGP Devices]"/></div>
+                <div class="headerWidget"><h:link outcome="bgprouters" value="[BGP Routers]"/></div>
+                <div class="headerWidget"><h:link outcome="bgppeers"   value="[BGP Peers]"  /></div>
+
+
+                <h:form>
+                    <div class="headerWidget"><h:commandLink action="#{deviceManager.dump()}"    value="[Dump]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{deviceManager.clear()}"   value="[Clear]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{deviceManager.reload()}"  value="[Reload]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{deviceManager.init()}"    value="[Init]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{deviceManager.refresh()}" value="[Refresh]"/></div>
+                </h:form>
+            </div>
+
         </ui:composition>
     </h:body>
-    
+
 </html>
 
