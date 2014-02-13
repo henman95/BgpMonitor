@@ -7,6 +7,7 @@
 package com.spirent.its.bgpmonitor;
 
 public class BgpPeer {
+    private Device device;
     private String localAddress;
     private String remoteAddress;
     private String state;
@@ -16,12 +17,21 @@ public class BgpPeer {
     public BgpPeer() {
     }
 
-    public BgpPeer(String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
+    public BgpPeer(Device device,String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
+        this.device = device;
         this.localAddress = localAddress;
         this.remoteAddress = remoteAddress;
         this.state = state;
         this.localAS = localAS;
         this.remoteAS = remoteAS;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
     
     public String getLocalAddress() {

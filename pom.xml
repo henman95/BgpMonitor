@@ -10,12 +10,19 @@
     <name>BgpMonitor</name>
   
     <properties>
-        <org.richfaces.version>4.3.4.Final</org.richfaces.version>
+        <org.richfaces.version>4.3.5.Final</org.richfaces.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.richfaces</groupId>
+                <artifactId>richfaces-bom</artifactId>
+                <version>${org.richfaces.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
   
@@ -75,5 +82,15 @@
             <artifactId>javax.ejb-api</artifactId>
             <version>3.2</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-components-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.core</groupId>
+            <artifactId>richfaces-core-impl</artifactId>
+        </dependency>
+            
+          
+</dependencies>
 </project>

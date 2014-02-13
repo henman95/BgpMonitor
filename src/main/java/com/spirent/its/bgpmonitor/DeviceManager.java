@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.spirent.its.bgpmonitor;
 
 import java.io.BufferedReader;
@@ -25,10 +19,11 @@ import java.util.regex.Pattern;
 public class DeviceManager {
     private Date  lastUpdate;
     
-    private final HashMap<String,String> configList;
-    private final HashMap<String,Device> deviceList;
-    private final HashMap<String,Site>   siteList;
-    private final HashMap<String,Date>   commandTimeList;
+    private final HashMap<String,String>  configList;
+    private final HashMap<String,Device>  deviceList;
+    private final HashMap<String,BgpPeer> bgpPeerList;
+    private final HashMap<String,Site>    siteList;
+    private final HashMap<String,Date>    commandTimeList;
     
     Pattern reComment;
     Pattern reConfig;
@@ -39,6 +34,7 @@ public class DeviceManager {
         // Internal Databases
         configList      = new HashMap<>();
         deviceList      = new HashMap<>();
+        bgpPeerList     = new HashMap<>();
         siteList        = new HashMap<>();
         commandTimeList = new HashMap<>();
 
@@ -97,45 +93,6 @@ public class DeviceManager {
             }
         }
         
-    }
-    
-    public void sendCommand( String action ) {
-        setCommandTime( action, new Date() );
-        
-        for( Device device: getDeviceList() ){
-            //device.initialize();
-            DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
-            //lastThread = thread;
-            
-            thread.start();
-        } 
-
-        while( DeviceUpdateThread.getCount() > 0 ) {
-            try {
-                Thread.sleep(50);
-                //System.out.println( "ThreadCount " + lastThread.getCount() );
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        setCommandTime( action );
-    }
-    
-    public void sendCommandJoined( String action ) {
-        for( Device device: getDeviceList() ){
-            DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
-                        
-            thread.start();
-            
-            try {
-                thread.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        setCommandTime( action );
     }
 
     // Configuration Methods
@@ -198,6 +155,50 @@ public class DeviceManager {
         return deviceList.containsKey(name);
     }
     
+    // BGP Peer Methods
+    public void addBgpPeer( BgpPeer peer ) {
+        String name     = peer.getDevice().getName();
+        String localAS  = peer.getLocalAS();
+        String remoteAS = peer.getRemoteAS();
+        String index    = String.format( "%s-%s-%s", name, localAS, remoteAS );
+        
+        bgpPeerList.put( index,peer );
+    }
+    
+    public BgpPeer getBgpPeer( String index ) {
+        if( hasBgpPeer( index ) )
+            return bgpPeerList.get( index );
+        return null;
+    }
+    
+    public void delBgpPeer( String index ) {
+        if( hasBgpPeer( index ) )
+            bgpPeerList.remove( index );
+    }
+    
+    public ArrayList<String> getBgpPeerKeys() {
+        ArrayList<String> result = new ArrayList<>();
+        
+        for( String key: bgpPeerList.keySet() )
+            result.add( key );
+        
+        return result;
+    }
+    
+    public ArrayList<BgpPeer> getAllBgpPeers() {
+        ArrayList<BgpPeer> result = new ArrayList<>();
+        
+        for( BgpPeer peer: bgpPeerList.values() ){
+            result.add(peer);
+        }
+        
+        return result;
+    }
+    
+    public boolean hasBgpPeer( String index ) {
+        return bgpPeerList.containsKey( index );
+    }
+    
     
     // Site Methods
     public void addSite( Site site ) {
@@ -255,6 +256,39 @@ public class DeviceManager {
         return (int)((now.getTime()-lastRun.getTime())/1000);
     }
     
+    // Commands 
+    public void sendCommand( String action ) {
+        sendCommand( action, true );
+    }
+    
+    public void sendCommand( String action, boolean threaded ) {
+        setCommandTime( action, new Date() );
+        
+        for( Device device: getDeviceList() ){
+            DeviceUpdateThread thread = new DeviceUpdateThread( device, action );
+
+            thread.start();
+            
+            if( !threaded ) {
+                try {
+                    thread.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } 
+    
+        while( DeviceUpdateThread.getCount() > 0 ) {
+            try {
+                Thread.sleep(50);
+                //System.out.println( "ThreadCount " + lastThread.getCount() );
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DeviceManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        setCommandTime( action );
+    }
     
     @Override
     public String toString() {

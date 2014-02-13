@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:a4j="http://richfaces.org/a4j">
 
     <h:body>
         <ui:composition>
@@ -15,7 +16,6 @@
                 <div class="headerWidget"><h:link outcome="bgpdevices" value="[BGP Devices]"/></div>
                 <div class="headerWidget"><h:link outcome="bgprouters" value="[BGP Routers]"/></div>
                 <div class="headerWidget"><h:link outcome="bgppeers"   value="[BGP Peers]"  /></div>
-
 
                 <h:form>
                     <div class="headerWidget"><h:commandLink action="#{deviceManager.dump()}"    value="[Dump]"/></div>
