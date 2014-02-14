@@ -7,30 +7,21 @@ package com.spirent.its.bgpmonitor;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-@Named(value = "deviceManager")
+@Named(value = "dmBean")
 @RequestScoped
 public class DeviceManagerBackingBean implements Serializable {
 
     @EJB
     private DeviceManagerBean deviceManagerBean;
-
-    public ArrayList<Device> getDevices() {
-        return deviceManagerBean.getManager().getDeviceList();
-    }
-
-    public ArrayList<BgpPeer> getPeers(Device device) {
-        return deviceManagerBean.getManager().getBgpPeers();
-    }
     
     public DeviceManager getManager() {
+        System.out.println( "Getting Manager" );
         return deviceManagerBean.getManager();
     }
 

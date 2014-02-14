@@ -336,18 +336,6 @@ public class DeviceManager {
             out.append(site);
         }
 
-        out.append("Peer List").append(newline);
-        out.append("-----------------------------------").append(newline);
-        for (Device device : getDeviceList()) {
-            for (BgpPeer peer : device.getBgpPeers()) {
-                out.append(String.format("%-20s %-15s", device.getName(), device.getAddress()));
-                out.append(String.format(" %-15s %-15s", peer.getLocalAddress(), peer.getRemoteAddress()));
-                out.append(String.format(" %3s", peer.getState()));
-                out.append(String.format(" %5s %5s", peer.getLocalAS(), peer.getRemoteAS()));
-                out.append(newline);
-            }
-        }
-
         return out.toString();
     }
 }

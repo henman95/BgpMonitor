@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.spirent.its.bgpmonitor;
 
 public class BgpPeer {
+
     private Device device;
     private String localAddress;
     private String remoteAddress;
@@ -17,7 +17,7 @@ public class BgpPeer {
     public BgpPeer() {
     }
 
-    public BgpPeer(Device device,String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
+    public BgpPeer(Device device, String localAddress, String remoteAddress, String state, String localAS, String remoteAS) {
         this.device = device;
         this.localAddress = localAddress;
         this.remoteAddress = remoteAddress;
@@ -33,7 +33,7 @@ public class BgpPeer {
     public void setDevice(Device device) {
         this.device = device;
     }
-    
+
     public String getLocalAddress() {
         return localAddress;
     }
@@ -75,8 +75,6 @@ public class BgpPeer {
     }
 
     public String toString() {
-        return String.format( "%15s %15s %15s %5s %5s", this.localAddress, this.remoteAddress, this.state, this.localAS, this.remoteAS );
+        return String.format("%15s %15s %15s %5s %5s", this.localAddress, this.remoteAddress, this.state, this.localAS, this.remoteAS);
     }
-    
-        
 }

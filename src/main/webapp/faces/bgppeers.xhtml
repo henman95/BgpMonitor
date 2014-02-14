@@ -16,8 +16,7 @@
             <ui:define name="content">
 
 
-
-                <rich:dataTable var="peer" value="#{deviceManager.manager.bgpPeers}" >
+                <rich:dataTable var="peer" value="#{dmBean.manager.bgpPeers}" >
                     <rich:column>
                         <f:facet name="header"><h:outputText value="Name"/></f:facet>
                         <h:outputText value="#{peer.device.name}"/>

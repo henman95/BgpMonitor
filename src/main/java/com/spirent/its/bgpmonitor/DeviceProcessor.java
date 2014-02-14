@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.Client;
@@ -25,10 +26,26 @@ import org.xml.sax.InputSource;
 
 public class DeviceProcessor {
 
-    private final DeviceManager manager;
+    private final DeviceManager          manager;
+    private final HashMap<String,String> bgpStateTable;
 
     public DeviceProcessor(DeviceManager manager) {
         this.manager = manager;
+
+        bgpStateTable = new HashMap<>();
+
+        bgpStateTable.put("Idle", "idle");
+        bgpStateTable.put("Connect", "connect");
+        bgpStateTable.put("Active", "active");
+        bgpStateTable.put("OpenSent", "opensent");
+        bgpStateTable.put("OpenConfirm", "openconfirm");
+        bgpStateTable.put("Established", "established");
+        bgpStateTable.put("1", "idle");
+        bgpStateTable.put("2", "connect");
+        bgpStateTable.put("3", "active");
+        bgpStateTable.put("4", "opensent");
+        bgpStateTable.put("5", "openconfirm");
+        bgpStateTable.put("6", "established");
     }
 
     public void sendCommand(String command) {
@@ -140,7 +157,7 @@ public class DeviceProcessor {
                 String state = snmp.get("1.3.6.1.2.1.15.3.1.2." + key).getValue();
                 String remoteAS = snmp.get("1.3.6.1.2.1.15.3.1.9." + key).getValue();
 
-                manager.addBgpPeer(new BgpPeer(device, localAddress, remoteAddress, device.getStateTable(state), localAS, remoteAS));
+                manager.addBgpPeer(new BgpPeer(device, localAddress, remoteAddress, bgpStateTable.get(state), localAS, remoteAS));
             }
 
         } catch (IOException ex) {
@@ -204,7 +221,7 @@ public class DeviceProcessor {
                     localAddress = stripPortFromAddress(localAddress);
                     remoteAddress = stripPortFromAddress(remoteAddress);
 
-                    manager.addBgpPeer(new BgpPeer(device, localAddress, remoteAddress, device.getStateTable(state), localAS, remoteAS));
+                    manager.addBgpPeer(new BgpPeer(device, localAddress, remoteAddress, bgpStateTable.get(state), localAS, remoteAS));
                 }
             }
 

@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"  
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <h:body>
         <ui:composition>
@@ -18,11 +17,11 @@
                 <div class="headerWidget"><h:link outcome="bgppeers"   value="[BGP Peers]"  /></div>
 
                 <h:form>
-                    <div class="headerWidget"><h:commandLink action="#{deviceManager.dump()}"    value="[Dump]"/></div>
-                    <div class="headerWidget"><h:commandLink action="#{deviceManager.clear()}"   value="[Clear]"/></div>
-                    <div class="headerWidget"><h:commandLink action="#{deviceManager.reload()}"  value="[Reload]"/></div>
-                    <div class="headerWidget"><h:commandLink action="#{deviceManager.init()}"    value="[Init]"/></div>
-                    <div class="headerWidget"><h:commandLink action="#{deviceManager.refresh()}" value="[Refresh]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{dmBean.dump()}"    value="[Dump]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{dmBean.clear()}"   value="[Clear]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{dmBean.reload()}"  value="[Reload]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{dmBean.init()}"    value="[Init]"/></div>
+                    <div class="headerWidget"><h:commandLink action="#{dmBean.refresh()}" value="[Refresh]"/></div>
                 </h:form>
             </div>
 

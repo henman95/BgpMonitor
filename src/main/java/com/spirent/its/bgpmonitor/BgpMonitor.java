@@ -54,19 +54,6 @@ public class BgpMonitor {
     private void OutputBgpList() {
         String newline = "\n";
 
-        for( Device device: manager.getDeviceList() ) {
-            for( BgpPeer peer: device.getBgpPeers() ) {
-                StringBuilder out = new StringBuilder();
-                
-                out.append( String.format("%-20s %-15s", device.getName(), device.getAddress() ) );
-                out.append( String.format(" %-15s %-15s", peer.getLocalAddress(), peer.getRemoteAddress() ));
-                out.append( String.format(" %3s", peer.getState() ));
-                out.append( String.format(" %5s %5s", peer.getLocalAS(), peer.getRemoteAS() ));
-                
-                System.out.println( out );
-            }
-        }
-        
         System.out.println( String.format( "Last Run : %s" , manager.getCommandTime( "refresh" ).toString() ));
         System.out.println( String.format( "Last Run : %d" , manager.elapseCommandTime( "refresh" ) ));
     }

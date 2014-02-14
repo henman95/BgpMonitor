@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Named;
 
 @Startup
 @Singleton
@@ -44,6 +46,11 @@ public class DeviceManagerBean {
     }
     
     public DeviceManager getManager() {
+        return manager;
+    }
+    
+    public DeviceManager getManager1() {
+        System.out.println( manager.toString() );
         return manager;
     }
     

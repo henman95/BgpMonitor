@@ -16,7 +16,7 @@
             <ui:define name="content">
 
 
-                <rich:dataTable var="device" value="#{deviceManager.devices}" >
+                <rich:dataTable var="device" value="#{dmBean.manager.deviceList}" >
                     <rich:column>
                         <f:facet name="header">
                             <h:outputText value="Name"/>
