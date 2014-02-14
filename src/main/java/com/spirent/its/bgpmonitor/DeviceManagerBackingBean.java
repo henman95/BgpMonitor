@@ -25,9 +25,13 @@ public class DeviceManagerBackingBean implements Serializable {
     public ArrayList<Device> getDevices() {
         return deviceManagerBean.getManager().getDeviceList();
     }
+
+    public ArrayList<BgpPeer> getPeers(Device device) {
+        return deviceManagerBean.getManager().getBgpPeers();
+    }
     
-    public ArrayList<BgpPeer> getPeers( Device device )  {
-        return deviceManagerBean.getManager().getDevice( device.getName()).getBgpPeers();
+    public DeviceManager getManager() {
+        return deviceManagerBean.getManager();
     }
 
     public void clear() {
@@ -43,15 +47,15 @@ public class DeviceManagerBackingBean implements Serializable {
     }
 
     public void init() {
-        deviceManagerBean.getManager().sendCommandJoined("initialize");
+        deviceManagerBean.getManager().sendCommand("initialize");
     }
 
     public void refresh() {
-        deviceManagerBean.getManager().sendCommandJoined("refresh");
+        deviceManagerBean.getManager().sendCommand("refresh");
     }
-    
+
     public void dump() {
-        System.out.println( deviceManagerBean.getManager().toString() );
+        System.out.println(deviceManagerBean.getManager().toString());
     }
 
 }

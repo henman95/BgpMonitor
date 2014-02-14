@@ -15,16 +15,41 @@
         <ui:composition template="/template/common/commonLayout.xhtml">
             <ui:define name="content">
 
-                
-                <ui:repeat var="device" value="#{deviceManager.devices}" >
-                    <rich:dataTable var="peer" value="#{deviceManager.getPeers(device)}" >
-                        <rich:column><h:outputText value="#{device.name}"/></rich:column>
-                        <rich:column><h:outputText value="#{device.address}"/></rich:column>
- 
-                    </rich:dataTable>
-                </ui:repeat>
 
-                
+
+                <rich:dataTable var="peer" value="#{deviceManager.manager.bgpPeers}" >
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Name"/></f:facet>
+                        <h:outputText value="#{peer.device.name}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Address"/></f:facet>
+                        <h:outputText value="#{peer.device.address}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Local Address"/></f:facet>
+                        <h:outputText value="#{peer.localAddress}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Remote Address"/></f:facet>
+                        <h:outputText value="#{peer.remoteAddress}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Local AS"/></f:facet>
+                        <h:outputText value="#{peer.localAS}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="Remote AS"/></f:facet>
+                        <h:outputText value="#{peer.remoteAS}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header"><h:outputText value="State"/></f:facet>
+                        <h:outputText value="#{peer.state}"/>
+                    </rich:column>
+                </rich:dataTable>
+
+
+
             </ui:define>
         </ui:composition>
     </h:body>

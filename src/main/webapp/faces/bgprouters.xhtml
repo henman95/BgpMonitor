@@ -14,8 +14,8 @@
     <h:body>
         <ui:composition template="/template/common/commonLayout.xhtml">
             <ui:define name="content">
-                
-                
+
+
                 <rich:dataTable var="device" value="#{deviceManager.devices}" >
                     <rich:column>
                         <f:facet name="header">
@@ -28,6 +28,12 @@
                             <h:outputText value="Address"/>
                         </f:facet>
                         <h:outputText value="#{device.address}"/>
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Type"/>
+                        </f:facet>
+                        <h:outputText value="#{device.type}"/>
                     </rich:column>
                     <rich:column>
                         <f:facet name="header">

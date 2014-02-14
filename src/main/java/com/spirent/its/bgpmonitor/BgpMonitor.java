@@ -31,7 +31,7 @@ public class BgpMonitor {
         }
        
         System.out.println( "Initial Refresh Starting" );
-        manager.sendCommandJoined( "refresh" );
+        //manager.sendCommandJoined( "refresh" );
         
         System.out.println( "Periodic Refresh Starting" );
         thread.start();

@@ -26,7 +26,7 @@ public class DeviceUpdateThread extends Thread{
         } catch (InterruptedException ex) {
             Logger.getLogger(DeviceUpdateThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+      /*  
         //System.out.println( String.format("Started %-20s %d", device.getName(), DeviceUpdateThread.getCount()));
         if( "initialize".equals( action ) )
             device.initialize();
@@ -34,7 +34,7 @@ public class DeviceUpdateThread extends Thread{
         if( "refresh".equals( action ))
             if( "cisco".equals( device.getType() ))
                 device.refresh();
-        
+        */
         //System.out.println( String.format("Stopped %-20s %d", device.getName(), DeviceUpdateThread.getCount()));
     }
     

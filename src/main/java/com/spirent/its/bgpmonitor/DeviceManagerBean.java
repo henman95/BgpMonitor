@@ -30,7 +30,7 @@ public class DeviceManagerBean {
         manager = new DeviceManager();
         try {
             manager.loadConfigFromFile( "" );
-            manager.sendCommandJoined( "refresh" );
+            //manager.sendCommandJoined( "refresh" );
             state = States.READY;
             
             System.out.println( "Device Manager Started");
